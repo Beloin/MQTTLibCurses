@@ -23,23 +23,23 @@ int on_message(void *context, char *topicName, int topicLen,
 }
 
 // MQTTClient client;
-int connect() {
+int mqtt_connect() {
   MQTTClient client;
 
   int status =
       MQTTClient_create(&client, "tcp://localhost:1883", "ExampleClientSub",
                         MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
-  // if (status != MQTTCLIENT_SUCCESS) {
-  //   printf("could not create client to MQTT broker Error: %d\n", status);
-  //   return status;
-  // }
+  if (status != MQTTCLIENT_SUCCESS) {
+    printf("could not create client to MQTT broker Error: %d\n", status);
+    return status;
+  }
 
-  // status = MQTTClient_setCallbacks(client, NULL, NULL, on_message, NULL);
-  // if (status != MQTTCLIENT_SUCCESS) {
-  //   printf("faled to set callbacks - Error: %d\n", status);
-  //   return status;
-  // }
+  status = MQTTClient_setCallbacks(client, NULL, NULL, on_message, NULL);
+  if (status != MQTTCLIENT_SUCCESS) {
+    printf("faled to set callbacks - Error: %d\n", status);
+    return status;
+  }
 
   MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
   conn_opts.username = "mqtt_example";
