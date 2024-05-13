@@ -14,10 +14,6 @@ Should also instantiate clients that follows this rules:
 2. Choose which topics (Again maybe from a CLI arg) - Maybe is better to create a UI
 3. Show to user the values recieved from the broker
 
-Use UI or CLI?
-
-Maybe is better to use UI instead of Cli
-
 # UI
 CLI or Visual?
 
