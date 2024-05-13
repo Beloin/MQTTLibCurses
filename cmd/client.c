@@ -1,7 +1,12 @@
 #include "mqtt.h"
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
+
+void on_temperature(char *message) {}
 
 int main(int argc, char *argv[]) {
   int pid = getpid();
@@ -11,8 +16,22 @@ int main(int argc, char *argv[]) {
     exit(r);
   }
 
-  while (1) {
-  }
+  subscribe(on_temperature, "sensors/temperature");
+
+  sigset_t set;
+  int sig;
+  struct sigaction sa;
+  sa.sa_handler = handle_signal;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = 0;
+  sigaction(SIGINT, &sa, NULL);
+  sigemptyset(&set);
+  sigaddset(&set, SIGINT);
+
+  sigwait(&set, &sig);
+
+
+  unsubscribe("sensors/temperature");
 
   return EXIT_SUCCESS;
 }
