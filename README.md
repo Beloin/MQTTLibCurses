@@ -61,7 +61,7 @@ apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui
 ```
 git clone git@github.com:eclipse/paho.mqtt.c.git
 cd paho.mqtt.c
-make && make html
+make && make html # If error: sudo apt-get install libssl-dev
 sudo make install  
 ```
 

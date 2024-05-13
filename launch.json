@@ -1,0 +1,10 @@
+{
+  "configurations":[ 
+    {
+      "run": "make client_debug",
+      "program": "./client",
+      "preProcess": false,
+      "args" : []
+    }
+  ]
+}
