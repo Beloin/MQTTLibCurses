@@ -54,20 +54,26 @@ Current user and password in `./config/pwfile`: `mqtt_example:2001`
 Client api will be created from `paho.mqtt.c`
 
 ### Necessary libs to build
-> `sudo pacman -S base-devel gcc make cmake`  
-> `apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui`  
+
+```
+sudo pacman -S base-devel gcc make cmake
+apt-get install build-essential gcc make cmake cmake-gui cmake-curses-gui
+```  
 
 ### Compiling and Installing
-> `git clone git@github.com:eclipse/paho.mqtt.c.git`  
-> `cd paho.mqtt.c`  
-> `make && make html`  
-> `sudo make install`  
+
+```
+git clone git@github.com:eclipse/paho.mqtt.c.git
+cd paho.mqtt.c
+make && make html
+sudo make install  
+```
 
 If there's any doubt, follow [this](https://embarcados.com.br/paho-mqtt-em-c-no-linux-embarcado/) tutorial 
 
 ## Webclient
 
-> `docker run -d --name mqttx-web -p 80:80 emqx/mqttx-web`
+> ```docker run -d --name mqttx-web -p 80:80 emqx/mqttx-web```
 
 # Resources
 
