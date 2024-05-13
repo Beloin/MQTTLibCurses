@@ -9,7 +9,7 @@ CLIENT_FILES=./cmd/client.c
 UI_SRCS=$(wildcard ./ui/*.c)
 CLIENT_CFLAGS=-Iui/ -lncurses
 
-SRC_FILES = $(wildcard ./src/*.c)
+SRC_FILES = $(wildcard ./src/**/*.c) $(wildcard ./src/*.c)
 SRC_OBJS= $(SRC_FILES:.c=.o)
 
 all: target client

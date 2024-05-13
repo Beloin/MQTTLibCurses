@@ -76,3 +76,4 @@ If there's any doubt, follow [this](https://embarcados.com.br/paho-mqtt-em-c-no-
 1. https://github.com/eclipse/paho.mqtt.c
 2. https://eclipse.github.io/paho.mqtt.c/MQTTClient/html/pubasync.html
 3. https://embarcados.com.br/paho-mqtt-em-c-no-linux-embarcado/
+4. Hashmap by [Tidwall](https://github.com/tidwall/hashmap.c/tree/master) 

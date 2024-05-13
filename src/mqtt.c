@@ -3,6 +3,23 @@
 
 #include <MQTTAsync.h>
 #include <MQTTClient.h>
+#include <string.h>
+
+#include "ds/hashmap.h"
+
+MQTTClient client;
+struct hashmap *function_map;
+
+int mapcmp(const void *a, const void *b, void *udata) {
+  const struct mappedFunction *mfA = a;
+  const struct mappedFunction *mfB = b;
+  return strcmp(mfA->topic, mfB->topic);
+}
+
+uint64_t maphash(const void *item, uint64_t seed0, uint64_t seed1) {
+  const struct mappedFunction *user = item;
+  return hashmap_sip(user->topic, strlen(user->topic), seed0, seed1);
+}
 
 void print_version() { printf("No. 1.0.0\n"); }
 
@@ -14,6 +31,13 @@ int on_message(void *context, char *topicName, int topicLen,
   printf("Mensagem recebida! \n\rTopico: %s Mensagem: %s\n", topicName,
          payload);
 
+  const struct mappedFunction *mp =
+      hashmap_get(function_map, &(struct mappedFunction){.topic = topicName});
+
+  if (mp) {
+    mp->fun(payload); // TODO: Make this works
+  }
+
   /* Faz echo da mensagem recebida */
   // publish(client, MQTT_PUBLISH_TOPIC, payload);
 
@@ -22,10 +46,7 @@ int on_message(void *context, char *topicName, int topicLen,
   return 1;
 }
 
-// MQTTClient client;
 int mqtt_connect() {
-  MQTTClient client;
-
   int status =
       MQTTClient_create(&client, "tcp://localhost:1883", "ExampleClientSub",
                         MQTTCLIENT_PERSISTENCE_NONE, NULL);
@@ -54,7 +75,23 @@ int mqtt_connect() {
     return status;
   }
 
-  // MQTTClient_subscribe(client, "example/topic", 0);
+  MQTTClient_subscribe(client, "example/topic", 0);
+
+  function_map = hashmap_new(sizeof(struct mappedFunction), 0, 0, 0, maphash,
+                             mapcmp, NULL, NULL);
 
   return 0;
+}
+
+int mqtt_disconnect() {
+  hashmap_free(function_map);
+  return 0;
+}
+
+void subscribe(callback f, char *topic) {
+  hashmap_set(function_map, &(struct mappedFunction){.topic = topic, .fun = f});
+}
+
+void unsubscribe(char *topic) {
+  hashmap_delete(function_map, &(struct mappedFunction){.topic = topic});
 }
