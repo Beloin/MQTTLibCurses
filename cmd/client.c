@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
 void wait_sigint() {
   sigset_t set;
-  int sig;
+  int sig = -1;
   struct sigaction sa;
   sa.sa_handler = handle_signal;
   sigemptyset(&sa.sa_mask);
@@ -42,5 +42,13 @@ void wait_sigint() {
   sigaction(SIGINT, &sa, NULL);
   sigemptyset(&set);
   sigaddset(&set, SIGINT);
-  sigwait(&set, &sig);
+
+  while (sig != SIGINT) {
+    sigwait(&set, &sig);
+
+    if (sig != SIGINT)
+      printf("press ^C to exit\n");
+  }
+
+  printf("\n");
 }
