@@ -75,7 +75,7 @@ int mqtt_connect() {
     return status;
   }
 
-  MQTTClient_subscribe(client, "example/topic", 0);
+  MQTTClient_subscribe(client, "example/topic", 0); // TODO: Add a way to call functions from subscribe
 
   function_map = hashmap_new(sizeof(struct mappedFunction), 0, 0, 0, maphash,
                              mapcmp, NULL, NULL);
@@ -88,10 +88,16 @@ int mqtt_disconnect() {
   return 0;
 }
 
+void handle_sub(){
+ // TODO: Choose a way to implement the subscribe
+}
+
 void subscribe(callback f, char *topic) {
+  printf("subscribing to %s\n", topic);
   hashmap_set(function_map, &(struct mappedFunction){.topic = topic, .fun = f});
 }
 
 void unsubscribe(char *topic) {
+  printf("unsubscribing from %s\n", topic);
   hashmap_delete(function_map, &(struct mappedFunction){.topic = topic});
 }

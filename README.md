@@ -24,6 +24,11 @@ CLI: ncurses
 
 In this project we will use make to facilitate the multiple builds and run
 
+# How to run
+Sometimes you need to setup LD_LIBRARY_PATH, run:
+
+```export LD_LIBRARY_PATH=/usr/local/lib```
+
 # Mosquitto
 
 ## Broker

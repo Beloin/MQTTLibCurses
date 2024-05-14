@@ -1,9 +1,9 @@
 {
   "configurations":[ 
     {
-      "run": "make client_debug",
+      "run": "make debug",
       "program": "./client",
-      "preProcess": false,
+      "preProcess": true,
       "args" : []
     }
   ]

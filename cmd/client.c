@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
   }
 
   subscribe(on_temperature, "sensors/temperature");
+  subscribe(on_temperature, "example/topic");
 
   sigset_t set;
   int sig;
@@ -28,8 +29,9 @@ int main(int argc, char *argv[]) {
   sigemptyset(&set);
   sigaddset(&set, SIGINT);
 
+  printf("waiting sigint\n");
+  fflush(stdout);
   sigwait(&set, &sig);
-
 
   unsubscribe("sensors/temperature");
 
