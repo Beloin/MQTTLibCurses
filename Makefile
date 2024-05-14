@@ -1,4 +1,5 @@
-CFLAGS=-Wall -Wextra -Isrc/ -lpaho-mqtt3c
+# CFLAGS=-Wall -Wextra -Isrc/ -lpaho-mqtt3c
+CFLAGS=-Isrc/ -lpaho-mqtt3c
 CC = gcc
 
 TARGET_OUT=target
@@ -9,7 +10,7 @@ CLIENT_FILES=./cmd/client.c
 UI_SRCS=$(wildcard ./ui/*.c)
 CLIENT_CFLAGS=-Iui/ -lncurses
 
-SRC_FILES = $(wildcard ./src/**/*.c) $(wildcard ./src/*.c)
+SRC_FILES = $(wildcard ./src/**/*.c ./src/*.c)
 SRC_OBJS= $(SRC_FILES:.c=.o)
 
 all: target client
@@ -22,13 +23,17 @@ target: ${TARGET_FILES} $(SRC_OBJS)
 	$(CC) ${CFLAGS} -o${TARGET_OUT} $(SRC_OBJS) ${TARGET_FILES}
 
 client: $(CLIENT_FILES) $(SRC_OBJS) 
-	$(CC) ${CFLAGS} $(CLIENT_CFLAGS) -o${CLIENT_OUT} $(SRC_OBJS) ${CLIENT_FILES} ${UI_SRCS}
+	$(CC) ${CFLAGS} $(CLIENT_CFLAGS) $(SRC_OBJS) ${CLIENT_FILES} ${UI_SRCS} -o${CLIENT_OUT}
+
+debug: CFLAGS += -g
+debug: client 
 
 # Run commands
 run_temperature: target
 	./${TARGET_OUT} temperature
 
 run_client: client
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 	./${CLIENT_OUT}
 
 clean:
