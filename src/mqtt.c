@@ -27,19 +27,16 @@ int on_message(void *context, char *topicName, int topicLen,
                MQTTClient_message *message) {
   char *payload = message->payload;
 
-  /* Mostra a mensagem recebida */
-  printf("Mensagem recebida! \n\rTopico: %s Mensagem: %s\n", topicName,
-         payload);
+#ifdef NDEBUG
+  printf("Message Received - %s\n", topicName);
+#endif /* ifdef NDEBUG */
 
   const struct mappedFunction *mp =
       hashmap_get(function_map, &(struct mappedFunction){.topic = topicName});
 
   if (mp) {
-    mp->fun(payload); // TODO: Make this works
+    mp->fun(payload);
   }
-
-  /* Faz echo da mensagem recebida */
-  // publish(client, MQTT_PUBLISH_TOPIC, payload);
 
   MQTTClient_freeMessage(&message);
   MQTTClient_free(topicName);
@@ -75,8 +72,6 @@ int mqtt_connect() {
     return status;
   }
 
-  MQTTClient_subscribe(client, "example/topic", 0); // TODO: Add a way to call functions from subscribe
-
   function_map = hashmap_new(sizeof(struct mappedFunction), 0, 0, 0, maphash,
                              mapcmp, NULL, NULL);
 
@@ -88,16 +83,14 @@ int mqtt_disconnect() {
   return 0;
 }
 
-void handle_sub(){
- // TODO: Choose a way to implement the subscribe
-}
-
 void subscribe(callback f, char *topic) {
   printf("subscribing to %s\n", topic);
   hashmap_set(function_map, &(struct mappedFunction){.topic = topic, .fun = f});
+  MQTTClient_subscribe(client, topic, 0);
 }
 
 void unsubscribe(char *topic) {
   printf("unsubscribing from %s\n", topic);
   hashmap_delete(function_map, &(struct mappedFunction){.topic = topic});
+  MQTTClient_unsubscribe(client, topic);
 }

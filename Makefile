@@ -25,7 +25,7 @@ target: ${TARGET_FILES} $(SRC_OBJS)
 client: $(CLIENT_FILES) $(SRC_OBJS) 
 	$(CC) ${CFLAGS} $(CLIENT_CFLAGS) $(SRC_OBJS) ${CLIENT_FILES} ${UI_SRCS} -o${CLIENT_OUT}
 
-debug: CFLAGS += -g
+debug: CFLAGS += -DNDEBUG -g
 debug: client 
 
 # Run commands

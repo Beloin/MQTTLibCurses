@@ -4,11 +4,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void wait_sigint();
+
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
 void on_temperature(char *message) {}
 
 int main(int argc, char *argv[]) {
+#ifdef NDEBUG
+  setbuf(stdout, NULL);
+#endif
+
   int pid = getpid();
   printf("starting client (%d)\n", pid);
   int r = mqtt_connect();
@@ -17,8 +23,16 @@ int main(int argc, char *argv[]) {
   }
 
   subscribe(on_temperature, "sensors/temperature");
-  subscribe(on_temperature, "example/topic");
 
+  printf("waiting sigint\n");
+  wait_sigint();
+
+  unsubscribe("sensors/temperature");
+
+  return EXIT_SUCCESS;
+}
+
+void wait_sigint() {
   sigset_t set;
   int sig;
   struct sigaction sa;
@@ -28,12 +42,5 @@ int main(int argc, char *argv[]) {
   sigaction(SIGINT, &sa, NULL);
   sigemptyset(&set);
   sigaddset(&set, SIGINT);
-
-  printf("waiting sigint\n");
-  fflush(stdout);
   sigwait(&set, &sig);
-
-  unsubscribe("sensors/temperature");
-
-  return EXIT_SUCCESS;
 }
