@@ -1,4 +1,5 @@
 #ifndef SRC_MQTT_HEADER
+#define SRC_MQTT_HEADER
 
 typedef void(*callback)(char *message) ;
 struct mappedFunction {

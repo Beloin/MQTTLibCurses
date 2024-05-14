@@ -8,7 +8,9 @@ void wait_sigint();
 
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
-void on_temperature(char *message) {}
+void on_temperature(char *message) {
+  printf("Result %s", message);
+}
 
 int main(int argc, char *argv[]) {
 #ifdef NDEBUG
