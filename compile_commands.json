@@ -2,45 +2,29 @@
   {
     "arguments": [
       "/usr/bin/gcc",
-      "-Wall",
-      "-Wextra",
-      "-Isrc/",
       "-c",
-      "-o",
-      "src/mqtt.o",
-      "src/mqtt.c"
-    ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/src/mqtt.c",
-    "output": "/home/beloin/Documents/aulas/11_sem/mom/src/mqtt.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Wextra",
-      "-Isrc/",
-      "-otarget",
-      "./src/mqtt.o",
-      "./cmd/main.c"
-    ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/cmd/main.c"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Wextra",
       "-Isrc/",
       "-Iui/",
-      "-oclient",
+      "./src/ds/hashmap.o",
       "./src/mqtt.o",
+      "-oclient",
       "./cmd/client.c"
     ],
     "directory": "/home/beloin/Documents/aulas/11_sem/mom",
     "file": "/home/beloin/Documents/aulas/11_sem/mom/cmd/client.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Isrc/",
+      "-Iui/",
+      "./src/ds/hashmap.o",
+      "./src/mqtt.o",
+      "-oclient",
+      "./ui/ui.c"
+    ],
+    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
+    "file": "/home/beloin/Documents/aulas/11_sem/mom/ui/ui.c"
   }
 ]

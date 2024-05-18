@@ -1,5 +1,6 @@
 #include "mqtt.h"
 #include "ui.h"
+#include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,8 +10,13 @@ void wait_sigint();
 
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
-void on_temperature(char *message) {
-  printf("Result %s", message);
+void on_temperature(char *message) { printf("Result %s", message); }
+
+pthread_t uit;
+void *ui_thread() {
+  ui_initialize();
+  ui_main_menu();
+  return NULL;
 }
 
 int main(int argc, char *argv[]) {
@@ -28,10 +34,9 @@ int main(int argc, char *argv[]) {
   subscribe(on_temperature, "sensors/temperature");
 
   printf("waiting sigint\n");
-  
+
   // TODO: Start on another thread to waitsig
-  ui_initialize();
-  ui_main_menu();
+  pthread_create(&uit, NULL, ui_thread, NULL);
 
   wait_sigint();
   ui_end();

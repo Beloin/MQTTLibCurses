@@ -1,5 +1,5 @@
-# CFLAGS=-Wall -Wextra -Isrc/ -lpaho-mqtt3c
-CFLAGS=-Isrc/ -lpaho-mqtt3c
+# CFLAGS=-Wall -Wextra -Isrc/ -lpaho-mqtt3c -lpthread
+CFLAGS=-Isrc/ -lpaho-mqtt3c -lpthread
 CC = gcc
 
 TARGET_OUT=target
@@ -8,7 +8,7 @@ TARGET_FILES=./cmd/main.c
 CLIENT_OUT=client
 CLIENT_FILES=./cmd/client.c
 UI_SRCS=$(wildcard ./ui/*.c)
-CLIENT_CFLAGS=-Iui/ -lncurses
+CLIENT_CFLAGS=-Iui/ -lncurses 
 
 SRC_FILES = $(wildcard ./src/**/*.c ./src/*.c)
 SRC_OBJS= $(SRC_FILES:.c=.o)
