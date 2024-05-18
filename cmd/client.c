@@ -25,7 +25,6 @@ bool is_speed_sub = false;
 void on_speed(char *message) { debug_box("Speed: %s\n", message); }
 
 void menuCallback(int r, MenuCommand command) {
-  // debug_box("Recieved In Callback");
   if (command == ENTER) {
     switch (r) {
     case 0:
@@ -91,7 +90,7 @@ int main(int argc, char *argv[]) {
 
   printf("waiting sigint\n");
 
-  // TODO: Start on another thread to waitsig
+  // Start UI Thread
   pthread_create(&uit, NULL, ui_thread, NULL);
 
   wait_sigint();

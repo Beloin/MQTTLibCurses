@@ -92,16 +92,13 @@ enum Option ui_main_menu(MenuCallback callback) {
 }
 
 int curr_debug = 0;
+int debug_line_limit = 12;
 void debug_box(const char *format, ...) {
   if (!debug_enabled)
     return;
-
-  int debug_line_limit = 12;
-  if (curr_debug == debug_line_limit) {
-    for (int i = 1; i <= debug_line_limit; i++) {
-      wmove(debugbw, 1 * i, 1);
-      wclrtoeol(debugbw);
-    }
+  if (curr_debug > debug_line_limit) {
+    wclear(debugbw);
+    box(debugbw, 0, 0);
 
     curr_debug = 0;
   }
@@ -121,21 +118,21 @@ void debug_box(const char *format, ...) {
 char *rows[] = {"Temperature", "Humidity", "Speed"};
 void print_rows(int selected, int startx, int starty) {
   for (int i = 0; i < 3; i++) {
-    char *format = "%s";
-    if (i == selected) {
-      format = "* %s";
-      attron(COLOR_PAIR(selection_pair));
-    }
-
     // Clear the menu with the * included
     for (int j = 0; j < strlen(rows[i]) + 2; j++) {
       waddch(menuw, ' ');
     }
 
+    char *format = "%s";
+    if (i == selected) {
+      format = "* %s";
+      wattron(menuw, COLOR_PAIR(selection_pair));
+    }
+
     wmove(menuw, starty, startx);
     wprintw(menuw, format, rows[i]);
 
-    attroff(COLOR_PAIR(selection_pair));
+    wattroff(menuw, COLOR_PAIR(selection_pair));
     wmove(menuw, ++starty, startx);
   }
 
@@ -183,4 +180,45 @@ const char *MenuCommand_to_string(MenuCommand command) {
   default:
     return "NONE";
   }
+}
+
+WINDOW *sensors_01;
+WINDOW *sensors_02;
+WINDOW *sensors_03;
+void ui_sensors_initialize(int id) {
+  // TODO: Make this windows appear and disapear with given order
+  switch (id) {
+  case 0:
+    sensors_01 = newwin(10, 30, 1, 31);
+    box(sensors_01, 0, 0);
+    wrefresh(sensors_01);
+    break;
+  case 1:
+    sensors_02 = newwin(10, 30, 11, 31);
+    box(sensors_02, 0, 0);
+    wrefresh(sensors_02);
+    break;
+  case 2:
+    sensors_03 = newwin(10, 30, 22, 31);
+    box(sensors_03, 0, 0);
+    wrefresh(sensors_03);
+    break;
+  }
+  // delwin(WINDOW *)
+}
+
+void ui_sensors_remove(int id) {
+  switch (id) {
+  case 0:
+    delwin(sensors_01);
+    break;
+  case 1:
+    delwin(sensors_02);
+    break;
+  case 2:
+    delwin(sensors_03);
+    break;
+  }
+
+  refresh();
 }

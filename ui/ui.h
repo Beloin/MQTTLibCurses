@@ -27,6 +27,10 @@ enum Option ui_main_menu(MenuCallback callback);
 
 // TODO: Create an UI for status update
 
+void ui_sensors_initialize(int id);
+void ui_sensors_remove(int id);
+void ui_sensor_add(int id, char *message);
+
 void ui_debug();
 void debug_box(const char *format, ...);
 
