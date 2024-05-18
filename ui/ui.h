@@ -7,6 +7,15 @@ typedef struct {
 } Screen;
 
 enum Option { CHOICE_1, CHOOSE_2 };
+typedef enum {
+  ARROW_DOWN,
+  ARROW_UP,
+  ARROW_LEFT,
+  ARROW_RIGHT,
+  NONE
+} MenuCommand;
+
+const char *MenuCommand_to_string(MenuCommand command);
 
 void ui_initialize();
 void ui_end();
