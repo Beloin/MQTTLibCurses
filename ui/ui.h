@@ -6,14 +6,13 @@ typedef struct {
   WINDOW *win;
 } Screen;
 
-enum Option{
-  CHOICE_1,
-  CHOOSE_2
-};
+enum Option { CHOICE_1, CHOOSE_2 };
 
 void ui_initialize();
 void ui_end();
 
 enum Option ui_main_menu();
+
+void debug_box(const char *format, ...);
 
 #endif // !UI_H

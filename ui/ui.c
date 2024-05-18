@@ -1,8 +1,11 @@
 #include "ui.h"
 #include <ncurses.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 WINDOW *mainw;
 WINDOW *menuw;
+WINDOW *debugbw;
 
 int termx, termy;
 
@@ -27,6 +30,10 @@ void ui_initialize() {
   wprintw(mainw, "Welcome to MQTT Project!");
   attroff(A_STANDOUT);
   wrefresh(mainw);
+
+  debugbw = newwin(15, 60, .74 * termy, .75 * termx);
+  box(debugbw, 0, 0);
+  wrefresh(debugbw);
 }
 
 void initialize_colors_pair() {
@@ -44,7 +51,38 @@ enum Option ui_main_menu() {
   print_rows(1, 1, 1);
   wrefresh(menuw);
 
+  char buf[255];
+  while (1) {
+    char c = wgetch(menuw);
+    // sprintf(buf, "Selected char: %c", c);
+    debug_box("Selected char: %c", c);
+  }
+
   return CHOICE_1;
+}
+
+int curr_debug = 0;
+void debug_box(const char *format, ...) {
+  int debug_line_limit = 12;
+  if (curr_debug == debug_line_limit) {
+    for (int i = 1; i <= debug_line_limit; i++) {
+      wmove(debugbw, 1 * i, 1);
+      wclrtoeol(debugbw);
+    }
+
+    curr_debug = 0;
+  }
+
+  va_list args;
+  va_start(args, format);
+
+  wmove(debugbw, 1 * (curr_debug + 1), 1);
+  wprintw(debugbw, format, args);
+
+  va_end(args);
+
+  wrefresh(debugbw);
+  curr_debug++;
 }
 
 char *rows[] = {"Temperature", "Humidity", "Speed"};
@@ -54,7 +92,7 @@ void print_rows(int selected, int startx, int starty) {
       attron(COLOR_PAIR(selection_pair));
     }
     wprintw(menuw, "%s", rows[i]);
-    
+
     attroff(COLOR_PAIR(selection_pair));
     wmove(menuw, ++starty, startx);
   }
