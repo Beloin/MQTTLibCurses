@@ -31,9 +31,13 @@ void menuCallback(int r, MenuCommand command) {
       if (!is_temp_sub) {
         subscribe(on_temperature, temperature_tp);
         debug_box("Subscribed to: %s\n", temperature_tp);
+
+        ui_sensors_initialize(0);
       } else {
         unsubscribe(temperature_tp);
         debug_box("Unsubscribed to: %s\n", temperature_tp);
+
+        ui_sensors_remove(0);
       }
 
       is_temp_sub = !is_temp_sub;
@@ -42,9 +46,13 @@ void menuCallback(int r, MenuCommand command) {
       if (!is_hum_sub) {
         subscribe(on_humidity, humidity_tp);
         debug_box("Subscribed to: %s\n", humidity_tp);
+
+        ui_sensors_initialize(1);
       } else {
         unsubscribe(humidity_tp);
         debug_box("Unsubscribed to: %s\n", humidity_tp);
+
+        ui_sensors_remove(1);
       }
       is_hum_sub = !is_hum_sub;
 
@@ -53,9 +61,13 @@ void menuCallback(int r, MenuCommand command) {
       if (!is_speed_sub) {
         subscribe(on_speed, speed_tp);
         debug_box("Subscribed to: %s\n", speed_tp);
+
+        ui_sensors_initialize(2);
       } else {
         unsubscribe(speed_tp);
         debug_box("Unsubscribed to: %s\n", speed_tp);
+
+        ui_sensors_remove(2);
       }
       is_speed_sub = !is_speed_sub;
 

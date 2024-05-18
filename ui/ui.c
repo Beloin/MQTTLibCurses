@@ -191,34 +191,43 @@ void ui_sensors_initialize(int id) {
   case 0:
     sensors_01 = newwin(10, 30, 1, 31);
     box(sensors_01, 0, 0);
+    wmove(sensors_01, 0, 1);
+    wprintw(sensors_01, "Temperature");
     wrefresh(sensors_01);
     break;
   case 1:
     sensors_02 = newwin(10, 30, 11, 31);
     box(sensors_02, 0, 0);
+    wmove(sensors_02, 0, 1);
+    wprintw(sensors_02, "Humidity");
     wrefresh(sensors_02);
     break;
   case 2:
     sensors_03 = newwin(10, 30, 22, 31);
     box(sensors_03, 0, 0);
+    wmove(sensors_03, 0, 1);
+    wprintw(sensors_03, "Speed");
     wrefresh(sensors_03);
     break;
   }
-  // delwin(WINDOW *)
 }
 
 void ui_sensors_remove(int id) {
   switch (id) {
   case 0:
+    wclear(sensors_01);
+    wrefresh(sensors_01);
     delwin(sensors_01);
     break;
   case 1:
+    wclear(sensors_02);
+    wrefresh(sensors_02);
     delwin(sensors_02);
     break;
   case 2:
+    wclear(sensors_03);
+    wrefresh(sensors_03);
     delwin(sensors_03);
     break;
   }
-
-  refresh();
 }
