@@ -22,6 +22,8 @@ void ui_end();
 
 enum Option ui_main_menu();
 
+// TODO: Create an UI for status update
+
 void debug_box(const char *format, ...);
 
 #endif // !UI_H
