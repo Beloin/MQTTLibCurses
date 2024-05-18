@@ -77,12 +77,12 @@ void debug_box(const char *format, ...) {
   va_start(args, format);
 
   wmove(debugbw, 1 * (curr_debug + 1), 1);
-  wprintw(debugbw, format, args);
-
-  va_end(args);
+  vw_printw(debugbw, format, args);
 
   wrefresh(debugbw);
   curr_debug++;
+
+  va_end(args);
 }
 
 char *rows[] = {"Temperature", "Humidity", "Speed"};
@@ -96,4 +96,6 @@ void print_rows(int selected, int startx, int starty) {
     attroff(COLOR_PAIR(selection_pair));
     wmove(menuw, ++starty, startx);
   }
+
+  wrefresh(menuw);
 }
