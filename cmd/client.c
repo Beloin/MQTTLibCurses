@@ -2,6 +2,7 @@
 #include "ui.h"
 #include <pthread.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -10,12 +11,67 @@ void wait_sigint();
 
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
-void on_temperature(char *message) { printf("Result %s", message); }
+char *temperature_tp = "sensors/temperature";
+char *humidity_tp = "sensors/humidity";
+char *speed_tp = "sensors/speed";
+
+bool is_temp_sub = false;
+void on_temperature(char *message) { debug_box("Temperature: %s\n", message); }
+
+bool is_hum_sub = false;
+void on_humidity(char *message) { debug_box("Humidity: %s\n", message); }
+
+bool is_speed_sub = false;
+void on_speed(char *message) { debug_box("Speed: %s\n", message); }
+
+void menuCallback(int r, MenuCommand command) {
+  // debug_box("Recieved In Callback");
+  if (command == ENTER) {
+    switch (r) {
+    case 0:
+      if (!is_temp_sub) {
+        subscribe(on_temperature, temperature_tp);
+        debug_box("Subscribed to: %s\n", temperature_tp);
+      } else {
+        unsubscribe(temperature_tp);
+        debug_box("Unsubscribed to: %s\n", temperature_tp);
+      }
+
+      is_temp_sub = !is_temp_sub;
+      break;
+    case 1:
+      if (!is_hum_sub) {
+        subscribe(on_humidity, humidity_tp);
+        debug_box("Subscribed to: %s\n", humidity_tp);
+      } else {
+        unsubscribe(humidity_tp);
+        debug_box("Unsubscribed to: %s\n", humidity_tp);
+      }
+      is_hum_sub = !is_hum_sub;
+
+      break;
+    case 2:
+      if (!is_speed_sub) {
+        subscribe(on_speed, speed_tp);
+        debug_box("Subscribed to: %s\n", speed_tp);
+      } else {
+        unsubscribe(speed_tp);
+        debug_box("Unsubscribed to: %s\n", speed_tp);
+      }
+      is_speed_sub = !is_speed_sub;
+
+      break;
+    }
+  }
+}
 
 pthread_t uit;
 void *ui_thread() {
   ui_initialize();
-  ui_main_menu();
+#ifdef NDEBUG
+  ui_debug();
+#endif
+  ui_main_menu(menuCallback);
   return NULL;
 }
 
@@ -31,7 +87,7 @@ int main(int argc, char *argv[]) {
     exit(r);
   }
 
-  subscribe(on_temperature, "sensors/temperature");
+  // subscribe(on_temperature, "sensors/temperature");
 
   printf("waiting sigint\n");
 
@@ -42,6 +98,8 @@ int main(int argc, char *argv[]) {
   ui_end();
 
   unsubscribe("sensors/temperature");
+  unsubscribe("sensors/humidity");
+  unsubscribe("sensors/speed");
 
   return EXIT_SUCCESS;
 }

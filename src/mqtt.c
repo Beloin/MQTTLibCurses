@@ -27,10 +27,6 @@ int on_message(void *context, char *topicName, int topicLen,
                MQTTClient_message *message) {
   char *payload = message->payload;
 
-#ifdef NDEBUG
-  printf("Message Received - %s\n", topicName);
-#endif /* ifdef NDEBUG */
-
   const struct mappedFunction *mp =
       hashmap_get(function_map, &(struct mappedFunction){.topic = topicName});
 
@@ -84,13 +80,13 @@ int mqtt_disconnect() {
 }
 
 void subscribe(callback f, char *topic) {
-  printf("subscribing to %s\n", topic);
+  // printf("subscribing to %s\n", topic);
   hashmap_set(function_map, &(struct mappedFunction){.topic = topic, .fun = f});
   MQTTClient_subscribe(client, topic, 0);
 }
 
 void unsubscribe(char *topic) {
-  printf("unsubscribing from %s\n", topic);
+  // printf("unsubscribing from %s\n", topic);
   hashmap_delete(function_map, &(struct mappedFunction){.topic = topic});
   MQTTClient_unsubscribe(client, topic);
 }
