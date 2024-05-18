@@ -4,6 +4,7 @@
       "run": "make debug",
       "program": "./client",
       "preProcess": true,
+      "pipeline": ["echo 'Hello World'", "make debug"],
       "args" : []
     }
   ]

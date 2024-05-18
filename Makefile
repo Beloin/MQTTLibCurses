@@ -22,7 +22,7 @@ all: target client
 target: ${TARGET_FILES} $(SRC_OBJS)
 	$(CC) ${CFLAGS} -o${TARGET_OUT} $(SRC_OBJS) ${TARGET_FILES}
 
-client: $(CLIENT_FILES) $(SRC_OBJS) 
+client: $(CLIENT_FILES) $(SRC_OBJS) $(UI_SRCS)
 	$(CC) ${CFLAGS} $(CLIENT_CFLAGS) $(SRC_OBJS) ${CLIENT_FILES} ${UI_SRCS} -o${CLIENT_OUT}
 
 debug: CFLAGS += -DNDEBUG -g
