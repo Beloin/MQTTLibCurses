@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
 void wait_sigint();
@@ -96,6 +97,7 @@ void *ui_thread() {
 }
 
 int main(int argc, char *argv[]) {
+  srand(time(NULL));
 #ifdef NDEBUG
   setbuf(stdout, NULL);
 #endif
@@ -117,11 +119,12 @@ int main(int argc, char *argv[]) {
   wait_sigint();
   ui_end();
 
-
   // Unsubscribing from all to don't need to add 3 more if's
   unsubscribe("sensors/temperature");
   unsubscribe("sensors/humidity");
   unsubscribe("sensors/speed");
+
+  mqtt_disconnect();
 
   return EXIT_SUCCESS;
 }

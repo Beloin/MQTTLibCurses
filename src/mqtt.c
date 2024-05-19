@@ -3,9 +3,12 @@
 
 #include <MQTTAsync.h>
 #include <MQTTClient.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "ds/hashmap.h"
+
+#define TIMEOUT 10000L
 
 MQTTClient client;
 struct hashmap *function_map;
@@ -39,10 +42,16 @@ int on_message(void *context, char *topicName, int topicLen,
   return 1;
 }
 
+// TODO: Later say port and host
 int mqtt_connect() {
-  int status =
-      MQTTClient_create(&client, "tcp://localhost:1883", "ExampleClientSub",
-                        MQTTCLIENT_PERSISTENCE_NONE, NULL);
+  char *client_format = "MoMClientSub-%d";
+  char name[strlen(client_format) + 4]; //  4 as NULL ending
+  int rd = random() % 100;
+  sprintf(name, client_format, rd);
+  printf("Conecting with client %s\n", name);
+
+  int status = MQTTClient_create(&client, "tcp://localhost:1883", name,
+                                 MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
   if (status != MQTTCLIENT_SUCCESS) {
     printf("could not create client to MQTT broker Error: %d\n", status);
@@ -76,6 +85,8 @@ int mqtt_connect() {
 
 int mqtt_disconnect() {
   hashmap_free(function_map);
+  MQTTClient_disconnect(client, 10000);
+  MQTTClient_destroy(&client);
   return 0;
 }
 
@@ -89,4 +100,22 @@ void unsubscribe(char *topic) {
   // printf("unsubscribing from %s\n", topic);
   hashmap_delete(function_map, &(struct mappedFunction){.topic = topic});
   MQTTClient_unsubscribe(client, topic);
+}
+
+int mqtt_send_message(char *topic, char *message) {
+  MQTTClient_deliveryToken token;
+  MQTTClient_message pubmsg = MQTTClient_message_initializer;
+
+  pubmsg.payload = message;
+  pubmsg.payloadlen = (int)strlen(message);
+  pubmsg.qos = 1;
+  pubmsg.retained = 0;
+
+  int status = MQTTClient_publishMessage(client, topic, &pubmsg, &token);
+  if (status != MQTTCLIENT_SUCCESS)
+    return 1;
+
+  status = MQTTClient_waitForCompletion(client, token, TIMEOUT);
+
+  return status;
 }
