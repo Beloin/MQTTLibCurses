@@ -9,7 +9,7 @@ struct mappedFunction {
 
 void print_version();
 
-int mqtt_connect();
+int mqtt_connect(char *name_prefix);
 int mqtt_disconnect();
 
 void subscribe(callback f, char *topic);

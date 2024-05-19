@@ -43,11 +43,11 @@ int on_message(void *context, char *topicName, int topicLen,
 }
 
 // TODO: Later say port and host
-int mqtt_connect() {
-  char *client_format = "MoMClientSub-%d";
-  char name[strlen(client_format) + 4]; //  4 as NULL ending
-  int rd = random() % 100;
-  sprintf(name, client_format, rd);
+int mqtt_connect(char *name_prefix) {
+  char *client_format = "%s#MoMClient-%d";
+  char name[strlen(name_prefix) + strlen(client_format) + 5];
+  int rd = random() % 1000;
+  sprintf(name, client_format, name_prefix, rd);
   printf("Conecting with client %s\n", name);
 
   int status = MQTTClient_create(&client, "tcp://localhost:1883", name,

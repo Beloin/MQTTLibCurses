@@ -7,7 +7,7 @@
 int main(int argc, char *argv[]) {
   srand(time(NULL));
 
-  mqtt_connect();
+  mqtt_connect("Sensors");
   // if (strcmp(argv[1], "temperature"))
   int status = mqtt_send_message("sensors/temperature", "48°C");
   if (!status)

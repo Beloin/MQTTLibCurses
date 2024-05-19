@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 
   int pid = getpid();
   printf("starting client (%d)\n", pid);
-  int r = mqtt_connect();
+  int r = mqtt_connect("Client");
   if (r) {
     exit(r);
   }
