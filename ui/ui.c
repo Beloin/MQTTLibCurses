@@ -272,7 +272,7 @@ void ui_sensor_add(int id, char *message) {
 
 static void add_row_limited_window(WINDOW *w, int limit, int *curr,
                                    char *format, ...) {
-  if ((*curr) > limit) {
+  if ((*curr) >= limit) {
     wclear(w);
     box(w, 0, 0);
 
