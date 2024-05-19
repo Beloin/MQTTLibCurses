@@ -16,13 +16,22 @@ char *humidity_tp = "sensors/humidity";
 char *speed_tp = "sensors/speed";
 
 bool is_temp_sub = false;
-void on_temperature(char *message) { debug_box("Temperature: %s\n", message); }
+void on_temperature(char *message) {
+  debug_box("Temperature: %s\n", message);
+  ui_sensor_add(0, message);
+}
 
 bool is_hum_sub = false;
-void on_humidity(char *message) { debug_box("Humidity: %s\n", message); }
+void on_humidity(char *message) {
+  debug_box("Humidity: %s\n", message);
+  ui_sensor_add(1, message);
+}
 
 bool is_speed_sub = false;
-void on_speed(char *message) { debug_box("Speed: %s\n", message); }
+void on_speed(char *message) {
+  debug_box("Speed: %s\n", message);
+  ui_sensor_add(2, message);
+}
 
 void menuCallback(int r, MenuCommand command) {
   if (command == ENTER) {
@@ -108,6 +117,8 @@ int main(int argc, char *argv[]) {
   wait_sigint();
   ui_end();
 
+
+  // Unsubscribing from all to don't need to add 3 more if's
   unsubscribe("sensors/temperature");
   unsubscribe("sensors/humidity");
   unsubscribe("sensors/speed");

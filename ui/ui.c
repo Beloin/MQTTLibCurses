@@ -15,6 +15,8 @@ int selection_pair = 1;
 void initialize_colors_pair();
 MenuCommand get_command();
 void print_rows(int selected, int startx, int starty);
+static void add_row_limited_window(WINDOW *w, int limit, int *curr,
+                                   char *format, ...);
 
 void ui_initialize() {
   mainw = initscr();
@@ -203,7 +205,7 @@ void ui_sensors_initialize(int id) {
     wrefresh(sensors_02);
     break;
   case 2:
-    sensors_03 = newwin(10, 30, 22, 31);
+    sensors_03 = newwin(10, 30, 21, 31);
     box(sensors_03, 0, 0);
     wmove(sensors_03, 0, 1);
     wprintw(sensors_03, "Speed");
@@ -218,16 +220,73 @@ void ui_sensors_remove(int id) {
     wclear(sensors_01);
     wrefresh(sensors_01);
     delwin(sensors_01);
+
+    sensors_01 = NULL;
     break;
   case 1:
     wclear(sensors_02);
     wrefresh(sensors_02);
     delwin(sensors_02);
+
+    sensors_02 = NULL;
     break;
   case 2:
     wclear(sensors_03);
     wrefresh(sensors_03);
     delwin(sensors_03);
+
+    sensors_03 = NULL;
     break;
   }
+}
+
+void ui_sensor_add(int id, char *message) {
+  static int row_limit = 8;
+  static int current_sensor01 = 0;
+  static int current_sensor02 = 0;
+  static int current_sensor03 = 0;
+  switch (id) {
+  case 0:
+    if (sensors_01) {
+      add_row_limited_window(sensors_01, row_limit, &current_sensor01,
+                             "Temperature Update: %s", message);
+    }
+
+    break;
+  case 1:
+    if (sensors_02) {
+      add_row_limited_window(sensors_02, row_limit, &current_sensor02,
+                             "Humidity Update: %s", message);
+    }
+
+    break;
+  case 2:
+    if (sensors_03) {
+      add_row_limited_window(sensors_03, row_limit, &current_sensor03,
+                             "Speed Update: %s", message);
+    }
+
+    break;
+  }
+}
+
+static void add_row_limited_window(WINDOW *w, int limit, int *curr,
+                                   char *format, ...) {
+  if ((*curr) > limit) {
+    wclear(w);
+    box(w, 0, 0);
+
+    (*curr) = 0;
+  }
+
+  va_list args;
+  va_start(args, format);
+
+  wmove(w, 1 * ((*curr) + 1), 1);
+  vw_printw(w, format, args);
+
+  wrefresh(w);
+  *curr = *curr + 1;
+
+  va_end(args);
 }
