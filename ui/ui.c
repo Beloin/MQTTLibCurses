@@ -249,21 +249,21 @@ void ui_sensor_add(int id, char *message) {
   case 0:
     if (sensors_01) {
       add_row_limited_window(sensors_01, row_limit, &current_sensor01,
-                             "Temperature Update: %s", message);
+                             "Temperature Update: %sC", message);
     }
 
     break;
   case 1:
     if (sensors_02) {
       add_row_limited_window(sensors_02, row_limit, &current_sensor02,
-                             "Humidity Update: %s", message);
+                             "Humidity Update: %s%%", message);
     }
 
     break;
   case 2:
     if (sensors_03) {
       add_row_limited_window(sensors_03, row_limit, &current_sensor03,
-                             "Speed Update: %s", message);
+                             "Speed Update: %sKm/h", message);
     }
 
     break;

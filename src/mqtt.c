@@ -10,7 +10,7 @@
 
 #define TIMEOUT 10000L
 
-MQTTClient client;
+MQTTClient client = NULL;
 struct hashmap *function_map;
 
 int mapcmp(const void *a, const void *b, void *udata) {
@@ -103,6 +103,10 @@ void unsubscribe(char *topic) {
 }
 
 int mqtt_send_message(char *topic, char *message) {
+  if (client == NULL) {
+    return 1;
+  }
+
   MQTTClient_deliveryToken token;
   MQTTClient_message pubmsg = MQTTClient_message_initializer;
 
