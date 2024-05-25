@@ -9,7 +9,6 @@ void *sensors_thread();
 STCallback temp_callback;
 STCallback hum_callback;
 STCallback speed_callback;
-STCallback all_callback;
 
 float temp_t = -1;
 float hum_t = -1;
@@ -47,7 +46,6 @@ void sensors_threshold_callback(char s, STCallback callback) {
     speed_callback = callback;
     break;
   default:
-    all_callback = callback;
     break;
   }
 }
@@ -74,19 +72,16 @@ void *sensors_thread() {
     float temperature = sensors_read_temperature();
     if (temperature >= temp_t) {
       temp_callback(temperature);
-      all_callback(temperature);
     }
 
     float humidity = sensors_read_humidity();
     if (humidity >= hum_t) {
       hum_callback(humidity);
-      all_callback(humidity);
     }
 
     float speed = sensors_read_speed();
     if (speed >= speed_t) {
       speed_callback(speed);
-      all_callback(speed);
     }
 
     mssleep(_ms_sleep);
