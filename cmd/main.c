@@ -1,23 +1,27 @@
 #include "mqtt.h"
+#include "mysensors.h"
+#include "utils/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
+void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
+
+void on_temp_threshold(float temp) {}
+
+void on_humidity_threshold(float humidity) {}
+
+void on_speed_threshold(float speed) {}
+
 int main(int argc, char *argv[]) {
   srand(time(NULL));
 
   mqtt_connect("Sensors");
-  // if (strcmp(argv[1], "temperature"))
-  int status = mqtt_send_message("sensors/temperature", "48°C");
-  if (!status)
-    printf("Temperature sent\n");
-  mqtt_send_message("sensors/humidity", "78%");
-  if (!status)
-    printf("Humidity Sent\n");
-  mqtt_send_message("sensors/speed", "22Km/h");
-  if (!status)
-    printf("Speed sent\n");
+
+  sensors_threshold_callback('t', on_temp_threshold);
+
+  wait_sigint(handle_signal);
 
   mqtt_disconnect();
 

@@ -13,14 +13,17 @@ CLIENT_CFLAGS=-Iui/ -lncurses
 SRC_FILES = $(wildcard ./src/**/*.c ./src/*.c)
 SRC_OBJS= $(SRC_FILES:.c=.o)
 
+TARGET_CFLAGS=-Imysensors/
+SENSORS_SRC=$(wildcard ./mysensors/*.c)
+
 all: target client
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Targets 
-target: ${TARGET_FILES} $(SRC_OBJS)
-	$(CC) ${CFLAGS} -o${TARGET_OUT} $(SRC_OBJS) ${TARGET_FILES}
+target: ${TARGET_FILES} $(SRC_OBJS) $(SENSORS_SRC)
+	$(CC) ${CFLAGS} $(TARGET_CFLAGS) -o${TARGET_OUT} $(SRC_OBJS) ${TARGET_FILES} $(SENSORS_SRC)
 
 client: $(CLIENT_FILES) $(SRC_OBJS) $(UI_SRCS)
 	$(CC) ${CFLAGS} $(CLIENT_CFLAGS) $(SRC_OBJS) ${CLIENT_FILES} ${UI_SRCS} -o${CLIENT_OUT}

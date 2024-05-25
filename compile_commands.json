@@ -4,8 +4,39 @@
       "/usr/bin/gcc",
       "-c",
       "-Isrc/",
+      "-Imysensors/",
+      "-otarget",
+      "./src/ds/hashmap.o",
+      "./src/utils/utils.o",
+      "./src/mqtt.o",
+      "./cmd/main.c"
+    ],
+    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
+    "file": "/home/beloin/Documents/aulas/11_sem/mom/cmd/main.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Isrc/",
+      "-Imysensors/",
+      "-otarget",
+      "./src/ds/hashmap.o",
+      "./src/utils/utils.o",
+      "./src/mqtt.o",
+      "./mysensors/mysensors.c"
+    ],
+    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
+    "file": "/home/beloin/Documents/aulas/11_sem/mom/mysensors/mysensors.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Isrc/",
       "-Iui/",
       "./src/ds/hashmap.o",
+      "./src/utils/utils.o",
       "./src/mqtt.o",
       "-oclient",
       "./cmd/client.c"
@@ -20,6 +51,7 @@
       "-Isrc/",
       "-Iui/",
       "./src/ds/hashmap.o",
+      "./src/utils/utils.o",
       "./src/mqtt.o",
       "-oclient",
       "./ui/ui.c"

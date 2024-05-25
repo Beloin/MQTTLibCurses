@@ -25,6 +25,13 @@ void sensors_set_threshold(char s, float threshold);
  */
 void sensors_threshold_callback(char s, STCallback callback);
 
-void sensors_start_randomizer(int seed);
+/* Start randomizer thread.
+ *
+ * Use the sensors_set_threshold(char, float) to set the thresold values for
+ * sensors.
+ */
+void sensors_start_randomizer(int seed, int ms_sleep);
+
+void play();
 
 #endif // !SENSORS_H

@@ -8,7 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 
-void wait_sigint();
+void wait_sigint2();
 
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
   // Start UI Thread
   pthread_create(&uit, NULL, ui_thread, NULL);
 
-  wait_sigint();
+  wait_sigint2();
   ui_end();
 
   // Unsubscribing from all to don't need to add 3 more if's
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
   return EXIT_SUCCESS;
 }
 
-void wait_sigint() {
+void wait_sigint2() {
   sigset_t set;
   int sig = -1;
   struct sigaction sa;
