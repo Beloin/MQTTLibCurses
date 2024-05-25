@@ -1,6 +1,7 @@
 #include "mysensors.h"
 #include "utils/utils.h"
 #include <pthread.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -21,12 +22,15 @@ static float speed = -1;
 void sensors_set_threshold(char s, float threshold) {
   switch (s) {
   case 't':
+    printf("New temperature threshold %.2f°C\n", threshold);
     temp_t = threshold;
     break;
   case 'h':
+    printf("New Humidity threshold %.2f%%\n", threshold);
     hum_t = threshold;
     break;
   case 's':
+    printf("New speed threshold %.2fKm/h\n", threshold);
     speed_t = threshold;
     break;
   default:

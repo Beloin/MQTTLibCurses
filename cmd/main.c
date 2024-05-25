@@ -33,7 +33,12 @@ void on_speed_threshold(float speed) {
 }
 
 int main(int argc, char *argv[]) {
-  srand(time(NULL));
+  float temp_threshold, hum_threshold, speed_threshold;
+  if (argc > 3) {
+    temp_threshold = atof(argv[1]);
+    hum_threshold = atof(argv[2]);
+    speed_threshold = atof(argv[3]);
+  }
 
   mqtt_connect("Sensors");
 
@@ -41,10 +46,11 @@ int main(int argc, char *argv[]) {
   sensors_threshold_callback('h', on_humidity_threshold);
   sensors_threshold_callback('s', on_speed_threshold);
 
-  sensors_set_threshold('t', 32);
-  sensors_set_threshold('h', 80);
-  sensors_set_threshold('s', 100);
+  sensors_set_threshold('t', temp_threshold);
+  sensors_set_threshold('h', hum_threshold);
+  sensors_set_threshold('s', speed_threshold);
 
+  // Use time(NULL) in first arg to change seed
   sensors_start_randomizer(1, 1000);
 
   wait_sigint(handle_signal);
