@@ -27,7 +27,36 @@ In this project we will use make to facilitate the multiple builds and run
 # How to run
 Sometimes you need to setup LD_LIBRARY_PATH, run:
 
-```export LD_LIBRARY_PATH=/usr/local/lib```
+```export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib```
+
+To run client:
+```bash
+make client 
+./client
+```
+
+To run client in debug mode:
+```bash
+make debug
+./client
+```
+
+To run the sensors randomizer:
+```bash
+make target
+./target
+```
+
+The sensor randomizer will be running second by second ranomizing temperature, humidity and speed sensors values.
+You can also add the following arguments to set ,in the strict order, the threshold:
+1. Temperature - Measured in Celsius
+2. Humidity - Measured in percentage
+3. Speed - Measured in Kilometers per hour
+
+Example:  
+`./target 30.0 50.5 32.5`
+
+
 
 # Mosquitto
 
