@@ -1,7 +1,8 @@
 #include "utils/utils.h"
 #include <signal.h>
+#include <stdio.h>
 #include <time.h>
-#include <utils.h>
+#include <errno.h>
 
 int mssleep(int msec) {
   struct timespec ts;
@@ -26,6 +27,9 @@ void wait_sigint(void *sig_handler) {
   sigset_t set;
   int sig = -1;
   struct sigaction sa;
+  sa.sa_handler = sig_handler;
+  sa.sa_handler = sig_handler;
+  sa.sa_handler = sig_handler;
   sa.sa_handler = sig_handler;
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = 0;

@@ -2,61 +2,14 @@
   {
     "arguments": [
       "/usr/bin/gcc",
-      "-c",
       "-Isrc/",
-      "-Imysensors/",
-      "-otarget",
-      "./src/ds/hashmap.o",
-      "./src/utils/utils.o",
-      "./src/mqtt.o",
-      "./cmd/main.c"
-    ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/cmd/main.c"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
       "-c",
-      "-Isrc/",
-      "-Imysensors/",
-      "-otarget",
-      "./src/ds/hashmap.o",
-      "./src/utils/utils.o",
-      "./src/mqtt.o",
-      "./mysensors/mysensors.c"
+      "-o",
+      "src/utils/utils.o",
+      "src/utils/utils.c"
     ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/mysensors/mysensors.c"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Isrc/",
-      "-Iui/",
-      "./src/ds/hashmap.o",
-      "./src/utils/utils.o",
-      "./src/mqtt.o",
-      "-oclient",
-      "./cmd/client.c"
-    ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/cmd/client.c"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Isrc/",
-      "-Iui/",
-      "./src/ds/hashmap.o",
-      "./src/utils/utils.o",
-      "./src/mqtt.o",
-      "-oclient",
-      "./ui/ui.c"
-    ],
-    "directory": "/home/beloin/Documents/aulas/11_sem/mom",
-    "file": "/home/beloin/Documents/aulas/11_sem/mom/ui/ui.c"
+    "directory": "/home/beloin/Documents/personal/MQTTLibCurses",
+    "file": "/home/beloin/Documents/personal/MQTTLibCurses/src/utils/utils.c",
+    "output": "/home/beloin/Documents/personal/MQTTLibCurses/src/utils/utils.o"
   }
 ]
