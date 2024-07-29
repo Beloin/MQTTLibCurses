@@ -47,7 +47,7 @@ make target
 ./target
 ```
 
-The sensor randomizer will be running second by second ranomizing temperature, humidity and speed sensors values.
+The sensor randomizer will be running each 2 seconds randomizing temperature, humidity and speed sensors values.
 You can also add the following arguments to set ,in the strict order, the threshold:
 1. Temperature - Measured in Celsius
 2. Humidity - Measured in percentage
@@ -57,6 +57,7 @@ Example:
 `./target 30.0 50.5 32.5`
 
 
+- Pressing p + enter will pause the iteration
 
 # Mosquitto
 
@@ -67,6 +68,8 @@ To configure and run:
 ```
 docker-compose up mqtt5
 docker exec -it <container-id> sh
+
+# set password: 2001
 mosquitto_passwd -c /mosquitto/config/pwfile mqtt_example
 
 # If necessary can delete

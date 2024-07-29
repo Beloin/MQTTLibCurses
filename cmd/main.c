@@ -9,7 +9,9 @@
 void handle_signal(int signal) { printf("Signal %d received.\n", signal); }
 
 void on_temp_threshold(float temp) {
-  printf("Temperature Threshold %.2f\n", temp);
+  printf("----------------------------------\n");
+  printf("Temperature hit Threshold %.2f\n", temp);
+  printf("----------------------------------\n\n");
 
   char buffer[10];
   sprintf(buffer, "%.2f", temp);
@@ -17,7 +19,9 @@ void on_temp_threshold(float temp) {
 }
 
 void on_humidity_threshold(float humidity) {
-  printf("humidity Threshold %.2f\n", humidity);
+  printf("----------------------------------\n");
+  printf("Humidity hit Threshold %.2f\n", humidity);
+  printf("----------------------------------\n\n");
 
   char buffer[10];
   sprintf(buffer, "%.2f", humidity);
@@ -25,7 +29,9 @@ void on_humidity_threshold(float humidity) {
 }
 
 void on_speed_threshold(float speed) {
-  printf("Speed Threshold %.2f\n", speed);
+  printf("----------------------------------\n");
+  printf("Speed hit Threshold %.2f\n", speed);
+  printf("----------------------------------\n\n");
 
   char buffer[10];
   sprintf(buffer, "%.2f", speed);
@@ -51,7 +57,7 @@ int main(int argc, char *argv[]) {
   sensors_set_threshold('s', speed_threshold);
 
   // Use time(NULL) in first arg to change seed
-  sensors_start_randomizer(1, 1000);
+  sensors_start_randomizer(1, 2000);
 
   wait_sigint(handle_signal);
   mqtt_disconnect();

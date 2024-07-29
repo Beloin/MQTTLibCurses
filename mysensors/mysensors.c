@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 void *sensors_thread();
+void *readch_thread();
 
 STCallback temp_callback;
 STCallback hum_callback;
@@ -55,6 +56,7 @@ void sensors_threshold_callback(char s, STCallback callback) {
 }
 
 static pthread_t sensors_t;
+static pthread_t readch_t;
 static int should_run = 1;
 static int t_pause = 0;
 static int _ms_sleep;
@@ -63,9 +65,22 @@ void sensors_start_randomizer(int seed, int ms_sleep) {
   _ms_sleep = ms_sleep;
   srand(seed);
   pthread_create(&sensors_t, NULL, sensors_thread, NULL);
+  pthread_create(&readch_t, NULL, readch_thread, NULL);
 }
 
 void play() { t_pause = !t_pause; }
+void *readch_thread() {
+    char c;
+    while (should_run) {
+        c = getchar();
+
+        if (c == 'p') {
+            play();
+        }
+    }
+
+    return NULL;
+}
 
 void *sensors_thread() {
   while (should_run) {
